@@ -1,0 +1,67 @@
+.App{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    background-color: #0e2630;
+    color: #fff;
+    /* justify-content: center;
+    align-items: center; */
+  }
+  .headingText{
+    color: #fff;
+    /* font-size: 40px; */
+    font-weight: bold;
+    text-align: center;
+    margin: 20px;
+    color: bisque;
+    margin-right: 55px;
+  }
+  .btnHeader{
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: space-between; */
+  }
+  .row{
+    display: flex;
+    flex-direction: row;
+  
+  }
+  .column{
+    display: flex;
+    flex-direction: column;
+  }
+  .jc-center{
+    justify-content: center;
+  }
+  .border-right-bottom{
+    border-right: 5px solid rgb(51, 233, 15);
+    border-bottom: 5px solid rgb(51, 233, 15); ;
+  }
+  .border-bottom{
+    border-bottom: 5px solid rgb(51, 233, 15);
+  }
+  .border-right{
+    border-right: 5px solid rgb(51, 233, 15);
+  }
+  .btn{
+    width: max-content;
+    margin: 40px auto 10px auto;
+    background-color: rgb(68, 230, 187);
+    cursor: pointer;
+    color: rgb(244, 48, 14);
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 5px;
+  }
+  .btn:hover{
+    background-color: rgb(225, 95, 72);
+    color: rgb(68, 230, 187);
+  }
+
+
+
+  .ScoreCard{
+    display: flex;
+    margin: 10px;
+  }
