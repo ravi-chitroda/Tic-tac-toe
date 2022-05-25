@@ -40,9 +40,8 @@ function Home() {
       // strings[index] = isXChance ? "X" : "O";
       // console.log("strings", strings);
       // setGameState(strings);
-      dispatch(setGameState(index));
+      dispatch(setGameState({ index, isXChance }));
       setIsXChance(!isXChance);
-      console.log("turn", setIsXChance);
     }
   };
 
