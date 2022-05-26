@@ -8,12 +8,13 @@ import { score } from "../component/Navbar";
 import { setGameState } from "../store/GameStateSlice";
 import GameStateSlice from "../store/GameStateSlice";
 
-// const initialState = ["", "", "", "", "", "", "", "", ""];
+const initialState = ["", "", "", "", "", "", "", "", ""];
 
 function Home() {
   const dispatch = useDispatch();
   // const [gameState, setGameState] = useState(initialState);
   const gameState = useSelector((state) => state.gameState);
+  console.log("gameState", gameState);
 
   const [winner, setWinner] = useState("");
 
@@ -84,8 +85,7 @@ function Home() {
   }, [gameState]);
 
   const handleClearBtn = () => {
-    // setGameState(initialState);
-    setGameState("");
+    setGameState(initialState);
     setGameOver(false);
     setWinner("");
     // setScores({ xScore: 0, oScore: 0 });
@@ -98,48 +98,53 @@ function Home() {
 
   // debugger;
 
-  // const checkLocalStorage = JSON.parse(localStorage.getItem("gameState"));
+  // let checkLocalStorage = JSON.parse(localStorage.getItem("gameState"));
 
   // const checkScore = JSON.parse(localStorage.getItem("scores"));
   // const isWinner = JSON.parse(localStorage.getItem("winner"));
 
   //to get from Local Storage
-  // useEffect(() => {
-  //   // console.log("setGameState");
-  //   // if (checkLocalStorage !== null)
-  //   {
-  //     setGameState(JSON.parse(localStorage.getItem("gameState")));
-  //   }
-  //   setIsXChance(JSON.parse(localStorage.getItem("turn")));
-  //   // setScores(JSON.parse(localStorage.getItem("scores")));
-  // }, []);
+  useEffect(() => {
+    // debugger;
+    const gameState = localStorage.getItem("gameState");
+    if (gameState) {
+      const checkLocalStorage = JSON.parse(gameState);
+      if (checkLocalStorage != null) {
+        setGameState(JSON.parse(localStorage.getItem("game")));
+      }
+    }
+    console.log("from Local Storage", gameState);
+
+    setIsXChance(JSON.parse(localStorage.getItem("turn")));
+    // setScores(JSON.parse(localStorage.getItem("scores")));
+  }, []);
 
   // // add to local Storage
-  // useEffect(() => {
-  //   // debugger;
-  //   if (JSON.stringify(gameState) !== JSON.stringify(initialState)) {
-  //     // console.log("setcalled", gameState);
-  //     localStorage.setItem("gameState", JSON.stringify(gameState));
-  //     localStorage.setItem("turn", JSON.stringify(isXChance));
-  //     // localStorage.setItem("scores", JSON.stringify(scores));
-  //   }
-  // }, [gameState]);
+  useEffect(() => {
+    // debugger;
+    if (JSON.stringify(gameState) !== JSON.stringify(initialState)) {
+      // console.log("setcalled", gameState);
+      localStorage.setItem("gameState", JSON.stringify(gameState));
+      localStorage.setItem("turn", JSON.stringify(isXChance));
+      // localStorage.setItem("scores", JSON.stringify(scores));
+    }
+  }, [gameState]);
 
-  // const handleRestart = () => {
-  //   if (checkLocalStorage !== null) {
-  //     dispatch(ResetScores(checkLocalStorage));
-  //     setGameState(localStorage.removeItem("gameState"));
-  //     setGameState("");
-  //     setGameState(initialState);
-  //     setWinner("");
-  //     setIsXChance(false);
-  //     // dispatch(ResetScores(checkLocalStorage));
-  //     // console.log("Reset", ResetScores());
-  //   }
-  //   // else if (checkScore !== 0) {
-  //   //   setScores({ xScore: 0, oScore: 0, draw: 0 });
-  //   // }
-  // };
+  const handleRestart = () => {
+    const gamedata = localStorage.getItem("gameState");
+    const checkLocalStorage = JSON.parse(gamedata);
+    if (checkLocalStorage !== null) {
+      dispatch(ResetScores(checkLocalStorage));
+      setGameState(localStorage.removeItem("gameState"));
+      setGameState("");
+      setGameState(initialState);
+      setWinner("");
+      setIsXChance(false);
+    }
+    // else if (checkScore !== 0) {
+    //   setScores({ xScore: 0, oScore: 0, draw: 0 });
+    // }
+  };
 
   return (
     <div className="App">
@@ -148,9 +153,9 @@ function Home() {
           Clear Game
         </button>
         <h2 className="headingText">Welcome to Tic-Tak-Toe</h2>
-        {/* <button className="btn" onClick={() => handleRestart()}>
+        <button className="btn" onClick={() => handleRestart()}>
           Restart
-        </button> */}
+        </button>
       </div>
 
       <div className="TimerContainer"></div>
