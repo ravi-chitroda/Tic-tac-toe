@@ -16,9 +16,14 @@ const GameStateSlice = createSlice({
       // debugger;
       const { index, isXChance } = action?.payload;
       strings[index] = isXChance ? "X" : "O";
+      return (state = strings[index]);
+      // setisXChance(!isXChance);
+
+      // return (state = action?.payload);
       // return (state[index] = initial[action.payload]);
       // state[index] = initial[index];
       // return (state = (initial) => [...initial, action.payload]);
+      // return (state = (initial) => [...initial, strings[index]]);
 
       // state.push(action.payload);
       // state = action.payload;

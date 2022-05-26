@@ -8,7 +8,7 @@ import { score } from "../component/Navbar";
 import { setGameState } from "../store/GameStateSlice";
 import GameStateSlice from "../store/GameStateSlice";
 
-const initialState = ["", "", "", "", "", "", "", "", ""];
+// const initialState = ["", "", "", "", "", "", "", "", ""];
 
 function Home() {
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ function Home() {
       // setGameState(strings);
       dispatch(setGameState({ index, isXChance }));
       setIsXChance(!isXChance);
+      console.log("Turn", gameState);
     }
   };
 
@@ -83,7 +84,8 @@ function Home() {
   }, [gameState]);
 
   const handleClearBtn = () => {
-    setGameState(initialState);
+    // setGameState(initialState);
+    setGameState("");
     setGameOver(false);
     setWinner("");
     // setScores({ xScore: 0, oScore: 0 });
