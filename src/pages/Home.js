@@ -84,19 +84,6 @@ function Home() {
     }
   }, [gameState]);
 
-  const handleClearBtn = () => {
-    setGameState(initialState);
-    setGameOver(false);
-    setWinner("");
-    dispatch(resetGameState(initialState));
-    // setScores({ xScore: 0, oScore: 0 });
-    // debugger;
-    // if (isWinner !== null) {
-    //   console.log(isWinner);
-    // setWinner(localStorage.removeItem("winner"));
-    // }
-  };
-
   // debugger;
 
   // let checkLocalStorage = JSON.parse(localStorage.getItem("gameState"));
@@ -105,14 +92,14 @@ function Home() {
   // const isWinner = JSON.parse(localStorage.getItem("winner"));
 
   //to get from Local Storage
-  let getlocalStorage = (index, isXChance) => {
-    const gameState = localStorage.getItem("game");
-    const checkLocalStorage = JSON.parse(gameState);
-    if (checkLocalStorage != null) {
-      dispatch(setGameState({ index, isXChance }));
-      console.log("get", getlocalStorage);
-    }
-  };
+  // let getlocalStorage = (index, isXChance) => {
+  //   const gameState = localStorage.getItem("game");
+  //   const checkLocalStorage = JSON.parse(gameState);
+  //   if (checkLocalStorage != null) {
+  //     dispatch(setGameState({ index, isXChance }));
+  //     console.log("get", getlocalStorage);
+  //   }
+  // };
 
   useEffect(() => {
     // debugger;
@@ -126,8 +113,9 @@ function Home() {
           // setGameState(JSON.parse(gameState));
           // dispatch(setGameState({ index, isXChance }));
           // dispatch(setGameState((index) => {index,isXChance}));
-          setGameState(getlocalStorage);
+          // setGameState(getlocalStorage);
           // console.log("from Local Storage", getlocalStorage);
+          dispatch(setGameState);
         }
       }
     } catch (error) {}
@@ -139,25 +127,37 @@ function Home() {
   // // add to local Storage
   useEffect(() => {
     // debugger;
+    const gameStateToLS = JSON.stringify(gameState);
+    const initial = JSON.stringify(initialState);
     try {
-      if (JSON.stringify(gameState) !== JSON.stringify(initialState)) {
-        console.log("setcalled", gameState);
-        localStorage.setItem("game", JSON.stringify(gameState));
-        localStorage.setItem("turn", JSON.stringify(isXChance));
-      }
-    } catch (error) {}
+      // if (gameStateToLS !== initial) {
+      // console.log("setcalled", gameState);
+      localStorage.setItem("game", gameStateToLS);
+      localStorage.setItem("turn", initial);
+      // }
+    } catch (error) {
+      console.log("error", error);
+    }
   }, [gameState]);
+
+  const handleClearBtn = () => {
+    // setGameState(initialState);
+    setGameOver(false);
+    setWinner("");
+    dispatch(resetGameState(initialState));
+  };
 
   const handleRestart = () => {
     // debugger;
-    const gamedata = localStorage.getItem("gameState");
-    const checkLocalStorage = JSON.parse(gamedata);
+    // const gamedata = localStorage.getItem("gameState");
+    // const checkLocalStorage = JSON.parse(gamedata);
     // if (checkLocalStorage !== null) {
-    dispatch(ResetScores(checkLocalStorage));
+    dispatch(ResetScores(initialState));
     dispatch(resetGameState(initialState));
-    setGameState(localStorage.removeItem("gameState"));
-    setGameState("");
-    setGameState(initialState);
+    // dispatch(setGameState(localStorage.removeItem("gameState")));
+    // setGameState("");
+    // setGameState(initialState);
+    setGameOver(false);
     setWinner("");
     setIsXChance(false);
     // }

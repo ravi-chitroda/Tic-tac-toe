@@ -21,7 +21,12 @@ const GameStateSlice = createSlice({
     },
     resetGameState(state, action) {
       return (state = initial);
+      // state.initial = action.payload;
     },
+    // addToLocalStorage(state, action) {
+    //   const gameStateToLS = JSON.stringify(gameState);
+    //   return (state = localStorage.setItem("game", gameStateToLS));
+    // },
   },
 });
 
