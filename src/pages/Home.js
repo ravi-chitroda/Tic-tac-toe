@@ -127,7 +127,7 @@ function Home() {
           // dispatch(setGameState({ index, isXChance }));
           // dispatch(setGameState((index) => {index,isXChance}));
           setGameState(getlocalStorage);
-          console.log("from Local Storage", getlocalStorage);
+          // console.log("from Local Storage", getlocalStorage);
         }
       }
     } catch (error) {}
@@ -149,17 +149,18 @@ function Home() {
   }, [gameState]);
 
   const handleRestart = () => {
+    // debugger;
     const gamedata = localStorage.getItem("gameState");
     const checkLocalStorage = JSON.parse(gamedata);
-    if (checkLocalStorage !== null) {
-      dispatch(ResetScores(checkLocalStorage));
-      // dispatch(resetGameState(checkLocalStorage));
-      setGameState(localStorage.removeItem("gameState"));
-      setGameState("");
-      setGameState(initialState);
-      setWinner("");
-      setIsXChance(false);
-    }
+    // if (checkLocalStorage !== null) {
+    dispatch(ResetScores(checkLocalStorage));
+    dispatch(resetGameState(initialState));
+    setGameState(localStorage.removeItem("gameState"));
+    setGameState("");
+    setGameState(initialState);
+    setWinner("");
+    setIsXChance(false);
+    // }
     // else if (checkScore !== 0) {
     //   setScores({ xScore: 0, oScore: 0, draw: 0 });
     // }
