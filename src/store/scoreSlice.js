@@ -8,7 +8,7 @@ const scoreSlice = createSlice({
   initialState: scores,
   reducers: {
     setScores(state, action) {
-      console.log("action", action.payload);
+      // console.log("action", action.payload);
       // debugger;
       state.data = action.payload;
       if (action.payload === "X") {

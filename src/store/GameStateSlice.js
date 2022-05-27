@@ -12,13 +12,18 @@ const GameStateSlice = createSlice({
     // },
     setGameState(state, action) {
       // debugger;
-      const { index, isXChance } = action?.payload;
+      // const { index, isXChance } = action.payload; //this can be written also in below way
+      const index = action?.payload.index;
+      const isXChance = action?.payload.isXChance;
 
       state[index] = isXChance ? "X" : "O";
       return state;
     },
+    resetGameState(state, action) {
+      return (state = initial);
+    },
   },
 });
 
-export const { setGameState, setisXChance } = GameStateSlice.actions;
+export const { setGameState, resetGameState } = GameStateSlice.actions;
 export default GameStateSlice.reducer;
