@@ -5,7 +5,11 @@ import { ResetScores, setScores } from "../store/scoreSlice";
 import scoreSlice from "../store/scoreSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { score } from "../component/Navbar";
-import { resetGameState, setGameState } from "../store/GameStateSlice";
+import {
+  resetGameState,
+  restoreGameState,
+  setGameState,
+} from "../store/GameStateSlice";
 import GameStateSlice from "../store/GameStateSlice";
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
@@ -15,18 +19,13 @@ function Home() {
   // const [gameState, setGameState] = useState(initialState);
   const gameState = useSelector((state) => state.gameState);
   // console.log("gameState", gameState);
-
   const [winner, setWinner] = useState("");
-
   const [isXChance, setIsXChance] = useState(false);
   //   const reduxState = useSelector(setScores);
   //   console.log("reduxState", reduxState);
-  //   const [scores, setScores] = useState({
-  //     xScore: 0,
-  //     oScore: 0,
-  //     // draw: 0
-  //   });
+  //   const [scores, setScores] = useState({xScore: 0, oScore: 0});
   const [gameOver, setGameOver] = useState();
+  const [isInitialrender, setIsInitialRender] = useState(true); //this logic used to prevent initial rendereing of both useEffect(one for setItem and other for GetItem) bcoz once data saved in LS, at the same time other useEffect also fetch data which has blank value at inital.
 
   //   const {
   //     xScore,
@@ -86,57 +85,45 @@ function Home() {
 
   // debugger;
 
-  // let checkLocalStorage = JSON.parse(localStorage.getItem("gameState"));
-
-  // const checkScore = JSON.parse(localStorage.getItem("scores"));
-  // const isWinner = JSON.parse(localStorage.getItem("winner"));
-
-  //to get from Local Storage
-  // let getlocalStorage = (index, isXChance) => {
-  //   const gameState = localStorage.getItem("game");
-  //   const checkLocalStorage = JSON.parse(gameState);
-  //   if (checkLocalStorage != null) {
-  //     dispatch(setGameState({ index, isXChance }));
-  //     console.log("get", getlocalStorage);
-  //   }
-  // };
-
   useEffect(() => {
+    console.log("called");
     // debugger;
     try {
       const gameState = localStorage.getItem("game");
-      console.log("game", gameState);
+      console.log("game getvalue", gameState);
       if (gameState) {
         const checkLocalStorage = JSON.parse(gameState);
         console.log("LS", checkLocalStorage);
         if (checkLocalStorage != null) {
-          // setGameState(JSON.parse(gameState));
-          // dispatch(setGameState({ index, isXChance }));
-          // dispatch(setGameState((index) => {index,isXChance}));
-          // setGameState(getlocalStorage);
-          // console.log("from Local Storage", getlocalStorage);
-          dispatch(setGameState);
+          dispatch(restoreGameState(checkLocalStorage));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("from LS", error);
+    }
 
-    setIsXChance(JSON.parse(localStorage.getItem("turn")));
+    // setIsXChance(JSON.parse(localStorage.getItem("turn")));
     // setScores(JSON.parse(localStorage.getItem("scores")));
   }, []);
 
   // // add to local Storage
   useEffect(() => {
     // debugger;
-    const gameStateToLS = JSON.stringify(gameState);
-    const initial = JSON.stringify(initialState);
-    try {
-      // if (gameStateToLS !== initial) {
-      // console.log("setcalled", gameState);
-      localStorage.setItem("game", gameStateToLS);
-      localStorage.setItem("turn", initial);
-      // }
-    } catch (error) {
-      console.log("error", error);
+    if (!isInitialrender) {
+      const gameStateToLS = JSON.stringify(gameState);
+      console.log("set", gameStateToLS);
+      const initial = JSON.stringify(initialState);
+      try {
+        // if (gameStateToLS !== initial) {
+        // console.log("setcalled", gameState);
+        localStorage.setItem("game", gameStateToLS);
+        // localStorage.setItem("turn", initial);
+        // }
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      setIsInitialRender(false);
     }
   }, [gameState]);
 
@@ -160,10 +147,6 @@ function Home() {
     setGameOver(false);
     setWinner("");
     setIsXChance(false);
-    // }
-    // else if (checkScore !== 0) {
-    //   setScores({ xScore: 0, oScore: 0, draw: 0 });
-    // }
   };
 
   return (
@@ -179,10 +162,6 @@ function Home() {
       </div>
 
       <div className="TimerContainer"></div>
-      <div className="ScoreCard">
-        <div>{/* <p>X - {scores}</p> */}</div>
-        <div>{/* <p>O - {scores}</p> */}</div>
-      </div>
       <div className="row jc-center">
         <Tic
           className="border-right-bottom"
