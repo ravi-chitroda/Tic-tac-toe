@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
 import "./Home.css";
 import Tic from "../component/Tic";
 import { ResetScores, setScores } from "../store/scoreSlice";
@@ -11,46 +10,30 @@ import {
   restoreGameState,
   setGameState,
 } from "../store/GameStateSlice";
-import setIsXChance from "../store/chanceSlice";
 import GameStateSlice from "../store/GameStateSlice";
-import { setWinner } from "../store/WinnerSlice";
+import { setIsXChance } from "../store/chanceSlice";
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
 
 function Home() {
   const dispatch = useDispatch();
-  // const [gameState, setGameState] = useState(initialState);
   const gameState = useSelector((state) => state.gameState);
-  // console.log("gameState", gameState);
   const [winner, setWinner] = useState("");
-  // const winner = useSelector((state) => state.winner);
-  const [isXChance, setIsXChance] = useState(false);
-  // const isXChance = useSelector((state) => state.isXChance);
-  //   const reduxState = useSelector(setScores);
-  //   console.log("reduxState", reduxState);
-  //   const [scores, setScores] = useState({xScore: 0, oScore: 0});
+  // const [isXChance, setIsXChance] = useState(false);
+  const isXChance = useSelector((state) => state.chance.isXChance);
+  console.log("state", isXChance);
+
   const [gameOver, setGameOver] = useState();
   const [isInitialrender, setIsInitialRender] = useState(true); //this logic used to prevent initial rendereing of both useEffect(one for setItem and other for GetItem) bcoz once data saved in LS, at the same time other useEffect also fetch data which has blank value at inital.
 
-  //   const {
-  //     xScore,
-  //     oScore,
-  //     // draw
-  //   } = scores;
-
   const onSquareCLicked = (index) => {
     if (gameState[index] === "") {
-      //to prevent user for already clicked square...cant change X to O if
-      // let strings = Array.from(gameState); //ask nikhil to Array.from
-      // strings[index] = isXChance ? "X" : "O";
-      // console.log("strings", strings);
-      // setGameState(strings);
       dispatch(setGameState({ index, isXChance }));
-      setIsXChance(!isXChance);
+      console.log("Before click", isXChance);
+      // setIsXChance(!isXChance);
+      dispatch(setIsXChance(isXChance));
       // dispatch(setIsXChance(index));
-      // dispatch(setIsXChance(!isXChance));
-      // dispatch(setIsXChance());
-      // console.log("Turn", gameState);
+      console.log("after Click", isXChance);
     }
   };
 
@@ -74,16 +57,13 @@ function Home() {
       ) {
         return gameState[a];
       }
-      //  else if (gameState !== "") {
-      //   return draw;
-      //   console.log(draw);
-      // }
     }
     return null;
   };
 
   useEffect(() => {
     let winner = checkWinner();
+
     // debugger;
     if (winner) {
       dispatch(setScores(winner));
@@ -92,28 +72,25 @@ function Home() {
   }, [gameState]);
 
   // debugger;
+  console.log("click", isXChance);
 
+  //to Get from Local Storage
   useEffect(() => {
-    console.log("called");
+    console.log("called", isXChance);
     // debugger;
     try {
       const gameState = localStorage.getItem("game");
-      // console.log("game getvalue", gameState);
+      console.log("game getvalue", gameState);
       if (gameState) {
-        setIsXChance(!isXChance); // after restart everytime"O" was clicked wethere it is previously "O" was clicked, so we hav change it
         const checkLocalStorage = JSON.parse(gameState);
-        // console.log("LS", checkLocalStorage);
+        console.log("LS", checkLocalStorage);
         if (checkLocalStorage != null) {
           dispatch(restoreGameState(checkLocalStorage));
         }
       }
     } catch (error) {
-      // console.log("from LS", error);
-      // setIsXChance(!isXChance);
+      console.log("from LS", error);
     }
-
-    // setIsXChance(JSON.parse(localStorage.getItem("turn")));
-    // setScores(JSON.parse(localStorage.getItem("scores")));
   }, []);
 
   // // add to local Storage
@@ -124,11 +101,7 @@ function Home() {
       console.log("set", gameStateToLS);
       const initial = JSON.stringify(initialState);
       try {
-        // if (gameStateToLS !== initial) {
-        // console.log("setcalled", gameState);
         localStorage.setItem("game", gameStateToLS);
-        // localStorage.setItem("turn", initial);
-        // }
       } catch (error) {
         console.log("error", error);
       }
@@ -138,35 +111,26 @@ function Home() {
   }, [gameState]);
 
   const handleClearBtn = () => {
-    // setGameState(initialState);
     setGameOver(false);
     setWinner("");
-    // dispatch(setWinner(""));
     dispatch(resetGameState(initialState));
   };
 
   const handleRestart = () => {
-    // debugger;
-    // const gamedata = localStorage.getItem("gameState");
-    // const checkLocalStorage = JSON.parse(gamedata);
-    // if (checkLocalStorage !== null) {
     dispatch(ResetScores(initialState));
     dispatch(resetGameState(initialState));
-    // dispatch(setGameState(localStorage.removeItem("gameState")));
-    // setGameState("");
-    // setGameState(initialState);
+
     setGameOver(false);
     setWinner("");
-    // dispatch(setWinner(""));
-    setIsXChance(false);
+    dispatch(setIsXChance(false));
   };
 
   return (
     <div className="App">
       <div className="btnHeader">
-        <Button className="btn" onClick={() => handleClearBtn()}>
+        <button className="btn" onClick={() => handleClearBtn()}>
           Clear Game
-        </Button>
+        </button>
         <h2 className="headingText">Welcome to Tic-Tak-Toe</h2>
         <button className="btn" onClick={() => handleRestart()}>
           Restart
@@ -224,9 +188,6 @@ function Home() {
           onClick={() => (gameOver ? handleClearBtn : onSquareCLicked(8))}
         />
       </div>
-      {/* <div>
-        <h4>Turn : {isXChance} </h4>
-      </div> */}
       {winner && (
         <>
           <p>{winner} has won the game </p>
@@ -237,6 +198,5 @@ function Home() {
 }
 
 // export const { winner } = Home;
-export const { checkWinner } = Home;
 
 export default Home;

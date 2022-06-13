@@ -2,51 +2,33 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { useDispatch } from "react-redux";
 // import { setGameState } from "./GameStateSlice";
 
-const initial = { isXChance: false };
+const initial = { isXChance: true };
 
 const chanceSlice = createSlice({
   name: "chance",
   initialState: initial,
   reducers: {
     setIsXChance(state, action) {
-      debugger;
-      let isXChance = action.payload;
-      const index = action?.payload.index;
-      state[index] = isXChance ? "X" : "O";
-      return { ...state[index], isXChance: !state[index].isXChance };
-
-      // if (isXChance === false) {
-      //   state.action = "X";
-      //   console.log("chance", isXChance);
-      //   // isXChance === true;
-      // } else {
-      //   state.action = "O";
-      //   // initial === false;
-      //   // isXChance === false;
-      // }
-
+      // debugger;
+      // console.log("action?.payload.isXChance", action?.payload.isXChance);
+      console.log("action.payload", action.payload);
+      // console.log("action", action);
+      const isXChance = action?.payload;
+      // return (state = !initial);
       // const index = action?.payload.index;
-      // console.log("index", index);
-      // const isXChance = action?.payload.isXChance;
+      // const isXChance = action.payload;
+
+      console.log("redux", isXChance);
+      return (state = { isXChance: !isXChance }); //here we used object({isXchance: !isXChance}) because const initial = {isXchance:true} is also object
+
       // state[index] = isXChance ? "X" : "O";
-      // state[index] = initial;
-      // return { ...state[index], isXChance: !state[index].isXChance };
-      // return (state.isXChance = !state.isXChance);
-      // return { ...state, isXChance: !state.isXChance };
-      // return { ...state, isXChance: !state.isXChance };
-      // state = { ...state, state: !initial.isXChance };
-      // if (isXChance) {
-      //   return { ...state[index], isXChance: "x" };
-      // } else {
-      //   return { ...state[index], isXChance: "O" };
-      // }
-      // if (state[index] = isXChance){
-      //   return (state[index]=
-      //   }
+      // return state;
+      // return (state = !isXChance);
       // if (initial) {
-      //   return (state[index] = "X");
+      //   return (state = isXChance);
+      // } else {
+      //   return (state = !isXChance);
       // }
-      // state[index] = initial;
     },
   },
 });

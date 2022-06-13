@@ -14,8 +14,6 @@ const store = configureStore({
     // winner: winnerReducer,
     // winner: winnerReducer,
   },
-  // preloadedState: reHydrateStore(),
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware().concat(localStorageMiddleware),
+
 });
 export default store;
