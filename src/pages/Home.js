@@ -13,6 +13,7 @@ import {
 import GameStateSlice from "../store/GameStateSlice";
 import { setIsXChance } from "../store/chanceSlice";
 import { setWinner } from "../store/WinnerSlice";
+import { setGameOver } from "../store/gameOverSlice";
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
 
@@ -26,7 +27,9 @@ function Home() {
   const isXChance = useSelector((state) => state.chance);
   console.log("state", isXChance);
 
-  const [gameOver, setGameOver] = useState();
+  // const [gameOver, setGameOver] = useState();
+  const gameOver = useSelector((state) => state.gameOver);
+  console.log("gameOver", gameOver);
   const [isInitialrender, setIsInitialRender] = useState(true); //this logic used to prevent initial rendereing of both useEffect(one for setItem and other for GetItem) bcoz once data saved in LS, at the same time other useEffect also fetch data which has blank value at inital.
 
   const onSquareCLicked = (index) => {
@@ -72,7 +75,8 @@ function Home() {
       // alert(`ohh yes!!! ${winner2} has won the game`);
       console.log("winner", winner);
       dispatch(setScores(winner));
-      setGameOver(true);
+      // setGameOver(true);
+      dispatch(setGameOver(true));
       dispatch(setWinner(winner));
     }
   }, [gameState]);
@@ -117,7 +121,7 @@ function Home() {
   }, [gameState]);
 
   const handleClearBtn = () => {
-    setGameOver(false);
+    dispatch(setGameOver(false));
     // setWinner("");
     dispatch(setWinner(""));
     dispatch(resetGameState(initialState));
@@ -127,7 +131,7 @@ function Home() {
     dispatch(ResetScores(initialState));
     dispatch(resetGameState(initialState));
 
-    setGameOver(false);
+    dispatch(setGameOver(false));
     dispatch(setWinner(""));
     // setWinner("");
     dispatch(setIsXChance(false));
@@ -199,7 +203,12 @@ function Home() {
       <div>
         {
           <>
-            <p>Turn of : {isXChance ? "X" : "O"}</p>
+            <p>
+              {/* {!winner} ?  */}
+              <span>Turn of :~ </span>
+              {isXChance ? "X" : "O"}
+              {/* : {winner} has won the game{" "} */}
+            </p>
           </>
         }
       </div>
