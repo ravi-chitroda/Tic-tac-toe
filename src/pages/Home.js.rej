@@ -1,0 +1,28 @@
+diff a/src/pages/Home.js b/src/pages/Home.js	(rejected hunks)
+@@ -8,7 +8,7 @@
+ import { setGameState } from "../store/GameStateSlice";
+ import GameStateSlice from "../store/GameStateSlice";
+ 
+-const initialState = ["", "", "", "", "", "", "", "", ""];
++// const initialState = ["", "", "", "", "", "", "", "", ""];
+ 
+ function Home() {
+   const dispatch = useDispatch();
+@@ -42,6 +42,7 @@
+       // setGameState(strings);
+       dispatch(setGameState({ index, isXChance }));
+       setIsXChance(!isXChance);
++      console.log("Turn", gameState);
+     }
+   };
+ 
+@@ -83,7 +84,8 @@
+   }, [gameState]);
+ 
+   const handleClearBtn = () => {
+-    setGameState(initialState);
++    // setGameState(initialState);
++    setGameState("");
+     setGameOver(false);
+     setWinner("");
+     // setScores({ xScore: 0, oScore: 0 });

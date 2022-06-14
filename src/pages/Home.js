@@ -12,15 +12,18 @@ import {
 } from "../store/GameStateSlice";
 import GameStateSlice from "../store/GameStateSlice";
 import { setIsXChance } from "../store/chanceSlice";
+import { setWinner } from "../store/WinnerSlice";
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
 
 function Home() {
   const dispatch = useDispatch();
   const gameState = useSelector((state) => state.gameState);
-  const [winner, setWinner] = useState("");
+  // const [winner, setWinner] = useState("");
+  const winner = useSelector((state) => state.winner);
+  console.log("winnerState", winner);
   // const [isXChance, setIsXChance] = useState(false);
-  const isXChance = useSelector((state) => state.chance.isXChance);
+  const isXChance = useSelector((state) => state.chance);
   console.log("state", isXChance);
 
   const [gameOver, setGameOver] = useState();
@@ -66,8 +69,11 @@ function Home() {
 
     // debugger;
     if (winner) {
+      // alert(`ohh yes!!! ${winner2} has won the game`);
+      console.log("winner", winner);
       dispatch(setScores(winner));
       setGameOver(true);
+      dispatch(setWinner(winner));
     }
   }, [gameState]);
 
@@ -112,7 +118,8 @@ function Home() {
 
   const handleClearBtn = () => {
     setGameOver(false);
-    setWinner("");
+    // setWinner("");
+    dispatch(setWinner(""));
     dispatch(resetGameState(initialState));
   };
 
@@ -121,7 +128,8 @@ function Home() {
     dispatch(resetGameState(initialState));
 
     setGameOver(false);
-    setWinner("");
+    dispatch(setWinner(""));
+    // setWinner("");
     dispatch(setIsXChance(false));
   };
 
@@ -187,6 +195,13 @@ function Home() {
           state={gameState[8]}
           onClick={() => (gameOver ? handleClearBtn : onSquareCLicked(8))}
         />
+      </div>
+      <div>
+        {
+          <>
+            <p>Turn of : {isXChance ? "X" : "O"}</p>
+          </>
+        }
       </div>
       {winner && (
         <>

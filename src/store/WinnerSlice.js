@@ -3,6 +3,8 @@
 // // import checkResult from "../component/checkResult";
 // import { checkWinner } from "../pages/Home";
 
+import { createSlice } from "@reduxjs/toolkit";
+
 // // const checkWinner = () => {
 // //     const lines = [
 // //       [0, 1, 2],
@@ -45,3 +47,18 @@
 // });
 // export const { setWinner } = winnerSlice.actions;
 // export default winnerSlice.reducer;
+
+const inital = "";
+
+const winnerSlice = createSlice({
+  name: "winner",
+  initialState: inital,
+  reducers: {
+    setWinner(state, action) {
+      return (state = action.payload);
+    },
+  },
+});
+
+export const { setWinner } = winnerSlice.actions;
+export default winnerSlice.reducer;

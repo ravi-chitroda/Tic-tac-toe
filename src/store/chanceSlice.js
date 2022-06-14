@@ -13,22 +13,13 @@ const chanceSlice = createSlice({
       // console.log("action?.payload.isXChance", action?.payload.isXChance);
       console.log("action.payload", action.payload);
       // console.log("action", action);
-      const isXChance = action?.payload;
-      // return (state = !initial);
-      // const index = action?.payload.index;
-      // const isXChance = action.payload;
+      // const isXChance = action?.payload;
+      const isXChance = action.payload;
+      console.log("initialChance", isXChance);
 
       console.log("redux", isXChance);
-      return (state = { isXChance: !isXChance }); //here we used object({isXchance: !isXChance}) because const initial = {isXchance:true} is also object
-
-      // state[index] = isXChance ? "X" : "O";
-      // return state;
-      // return (state = !isXChance);
-      // if (initial) {
-      //   return (state = isXChance);
-      // } else {
-      //   return (state = !isXChance);
-      // }
+      // return (state = { isXChance: !isXChance }); //here we used object({isXchance: !isXChance}) because const initial = {isXchance:true} is also object
+      return (state = !isXChance); //this for passing object
     },
   },
 });
