@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import React from "react";
 
-const initial = true;
+const initial = false;
 
 const gameOverSlice = createSlice({
   name: "gameOver",

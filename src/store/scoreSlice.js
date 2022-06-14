@@ -19,10 +19,7 @@ const scoreSlice = createSlice({
     },
     ResetScores(state, action) {
       state.data = action.payload;
-      // if (action.payload !== 0) {
-      //   setScores(0);
-      //   console.log("reset,", setScores);
-      // }
+
       if (score !== 0) {
         state.xScore = 0;
       }
