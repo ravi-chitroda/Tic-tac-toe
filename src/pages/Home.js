@@ -25,6 +25,7 @@ function Home() {
   const winner = useSelector((state) => state.winner);
   // const [isXChance, setIsXChance] = useState(false);
   const isXChance = useSelector((state) => state.chance);
+  const [initialRenderFinished, setInitialRenderFinished] = useState(false);
 
   // const [gameOver, setGameOver] = useState();
   const gameOver = useSelector((state) => state.gameOver);
@@ -63,20 +64,6 @@ function Home() {
     return null;
   };
 
-  useEffect(() => {
-    let winner = checkWinner();
-    console.log("initialRender", initialRender);
-    console.log("gameState", gameState);
-    // debugger;
-    if (!initialRender && winner) {
-      console.log("winner", winner);
-      dispatch(setScores(winner));
-      // setGameOver(true);
-      dispatch(setGameOver(true));
-      dispatch(setWinner(winner));
-    }
-  }, [gameState]);
-
   // // debugger;
   // console.log("click", isXChance);
 
@@ -95,9 +82,9 @@ function Home() {
         if (checkLocalStorage != null) {
           dispatch(setIsXChance(!chanceFromLS));
           dispatch(restoreGameState(checkLocalStorage));
-          dispatch(setInitialRender(false));
         }
       }
+      dispatch(setInitialRender(false));
     } catch (error) {
       console.log("from LS", error);
     }
@@ -106,7 +93,7 @@ function Home() {
   // // add to local Storage
   useEffect(() => {
     // debugger;
-    if (!initialRender) {
+    if (!initialRender && initialRenderFinished) {
       const gameStateToLS = JSON.stringify(gameState);
       // console.log("set", gameStateToLS);
       // const initial = JSON.stringify(initialState);
@@ -119,6 +106,23 @@ function Home() {
       } catch (error) {
         console.log("error", error);
       }
+    }
+    let winner = checkWinner();
+    console.log("initialRender", initialRender);
+    console.log("gameState", gameState);
+    // debugger;
+    if (winner) {
+      dispatch(setGameOver(true));
+    }
+    if (!initialRender && winner && initialRenderFinished) {
+      console.log("winner", winner);
+      // alert(`ohh yes!!! ${winner2} has won the game`);
+      dispatch(setScores(winner));
+      // setGameOver(true);
+      dispatch(setWinner(winner));
+    }
+    if (!initialRender && !initialRenderFinished) {
+      setInitialRenderFinished(true);
     }
   }, [gameState]);
 
