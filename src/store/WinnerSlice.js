@@ -48,11 +48,11 @@ import { createSlice } from "@reduxjs/toolkit";
 // export const { setWinner } = winnerSlice.actions;
 // export default winnerSlice.reducer;
 
-const inital = "";
+const initial = "";
 
 const winnerSlice = createSlice({
   name: "winner",
-  initialState: inital,
+  initialState: initial,
   reducers: {
     setWinner(state, action) {
       return (state = action.payload);

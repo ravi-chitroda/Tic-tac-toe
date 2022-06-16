@@ -10,14 +10,9 @@ const chanceSlice = createSlice({
   reducers: {
     setIsXChance(state, action) {
       // debugger;
-      // console.log("action?.payload.isXChance", action?.payload.isXChance);
-      console.log("action.payload", action.payload);
-      // console.log("action", action);
       // const isXChance = action?.payload;
       const isXChance = action.payload;
-      console.log("initialChance", isXChance);
 
-      console.log("redux", isXChance);
       // return (state = { isXChance: !isXChance }); //here we used object({isXchance: !isXChance}) because const initial = {isXchance:true} is also object
       return (state = !isXChance); //this for passing object
     },

@@ -14,6 +14,7 @@ import GameStateSlice from "../store/GameStateSlice";
 import { setIsXChance } from "../store/chanceSlice";
 import { setWinner } from "../store/WinnerSlice";
 import { setGameOver } from "../store/gameOverSlice";
+import { setInitialRender } from "../store/initialRenderSlice";
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
 
@@ -22,24 +23,19 @@ function Home() {
   const gameState = useSelector((state) => state.gameState);
   // const [winner, setWinner] = useState("");
   const winner = useSelector((state) => state.winner);
-  console.log("winnerState", winner);
   // const [isXChance, setIsXChance] = useState(false);
   const isXChance = useSelector((state) => state.chance);
-  console.log("state", isXChance);
 
   // const [gameOver, setGameOver] = useState();
   const gameOver = useSelector((state) => state.gameOver);
-  console.log("gameOver", gameOver);
-  const [isInitialrender, setIsInitialRender] = useState(true); //this logic used to prevent initial rendereing of both useEffect(one for setItem and other for GetItem) bcoz once data saved in LS, at the same time other useEffect also fetch data which has blank value at inital.
-
+  // const [isInitialrender, setIsInitialRender] = useState(true); //this logic used to prevent initial rendereing of both useEffect(one for setItem and other for GetItem) bcoz once data saved in LS, at the same time other useEffect also fetch data which has blank value at inital.
+  const initialRender = useSelector((state) => state.initialRender);
   const onSquareCLicked = (index) => {
     if (gameState[index] === "") {
       dispatch(setGameState({ index, isXChance }));
-      console.log("Before click", isXChance);
       // setIsXChance(!isXChance);
       dispatch(setIsXChance(isXChance));
       // dispatch(setIsXChance(index));
-      console.log("after Click", isXChance);
     }
   };
 
@@ -69,10 +65,10 @@ function Home() {
 
   useEffect(() => {
     let winner = checkWinner();
-
+    console.log("initialRender", initialRender);
+    console.log("gameState", gameState);
     // debugger;
-    if (winner) {
-      // alert(`ohh yes!!! ${winner2} has won the game`);
+    if (!initialRender && winner) {
       console.log("winner", winner);
       dispatch(setScores(winner));
       // setGameOver(true);
@@ -81,21 +77,25 @@ function Home() {
     }
   }, [gameState]);
 
-  // debugger;
-  console.log("click", isXChance);
+  // // debugger;
+  // console.log("click", isXChance);
 
   //to Get from Local Storage
   useEffect(() => {
-    console.log("called", isXChance);
     // debugger;
     try {
       const gameState = localStorage.getItem("game");
-      console.log("game getvalue", gameState);
+      const chanceInLS = localStorage.getItem("chance");
       if (gameState) {
         const checkLocalStorage = JSON.parse(gameState);
-        console.log("LS", checkLocalStorage);
+        // console.log("LS", checkLocalStorage);
+        const chanceFromLS = JSON.parse(chanceInLS);
+        // console.log("chancefromLS", chanceFromLS);
+
         if (checkLocalStorage != null) {
+          dispatch(setIsXChance(!chanceFromLS));
           dispatch(restoreGameState(checkLocalStorage));
+          dispatch(setInitialRender(false));
         }
       }
     } catch (error) {
@@ -106,17 +106,19 @@ function Home() {
   // // add to local Storage
   useEffect(() => {
     // debugger;
-    if (!isInitialrender) {
+    if (!initialRender) {
       const gameStateToLS = JSON.stringify(gameState);
-      console.log("set", gameStateToLS);
-      const initial = JSON.stringify(initialState);
+      // console.log("set", gameStateToLS);
+      // const initial = JSON.stringify(initialState);
+      const chanceToLS = JSON.stringify(isXChance);
+      // const scoreToLs = JSON.stringify(score);
       try {
         localStorage.setItem("game", gameStateToLS);
+        localStorage.setItem("chance", chanceToLS);
+        // localStorage.setItem("score", scoreToLs);
       } catch (error) {
         console.log("error", error);
       }
-    } else {
-      setIsInitialRender(false);
     }
   }, [gameState]);
 
@@ -135,6 +137,7 @@ function Home() {
     dispatch(setWinner(""));
     // setWinner("");
     dispatch(setIsXChance(false));
+    // dispatch(setScores(initialState));
   };
 
   return (
@@ -204,19 +207,23 @@ function Home() {
         {
           <>
             <p>
-              {/* {!winner} ?  */}
-              <span>Turn of :~ </span>
-              {isXChance ? "X" : "O"}
-              {/* : {winner} has won the game{" "} */}
+              {!winner ? (
+                <>
+                  <span>Turn of :~ </span>
+                  {isXChance ? "X" : "O"}
+                </>
+              ) : (
+                <h3>{winner} has won the game</h3>
+              )}
             </p>
           </>
         }
       </div>
-      {winner && (
+      {/* {winner && (
         <>
           <p>{winner} has won the game </p>
         </>
-      )}
+      )} */}
     </div>
   );
 }

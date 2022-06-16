@@ -6,6 +6,8 @@ import gameStateReducer from "./GameStateSlice";
 import chanceReducer from "./chanceSlice";
 import winnerReducer from "./WinnerSlice";
 import gameOverReducer from "./gameOverSlice"
+// import initialRender from "./initialRenderSlice"
+import initialRenderReducer from "./initialRenderSlice"
 // import winnerReducer from "./WinnerSlice"
 
 const store = configureStore({
@@ -14,7 +16,9 @@ const store = configureStore({
     gameState: gameStateReducer,
     chance: chanceReducer,
     winner: winnerReducer,
-    gameOver: gameOverReducer
+    gameOver: gameOverReducer,
+    initialRender: initialRenderReducer,
+    // initialRender: initialRenderReducer
   },
 
 });
